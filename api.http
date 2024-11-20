@@ -1,0 +1,36 @@
+###  load all movies
+GET http://localhost:1234/movies
+
+### load just one movie by id mmovie
+GET http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+
+### load all movies by genre
+GET http://localhost:1234/movies?genre=Action
+
+### Create a movie
+POST http://localhost:1234/movies
+Content-Type: application/json
+
+{
+  "title": "God's not dead 2",
+  "year": 2016,
+  "director": "God",
+  "duration": 140,
+  "poster": "https://i.ebayimg.com/images/g/4goAAOSwMyBe7hnQ/s-l1200.webp",
+  "genre": [
+    "Worship",
+    "Believer"
+  ],
+  "rate": 9.5
+}
+
+### Update a part of movie
+PATCH http://localhost:1234/movies/f5c686d5-2613-448f-b314-7aad2532a82f
+Content-Type: application/json
+
+{
+    "year": 2017
+}
+
+### Delete one movie
+DELETE http://localhost:1234/movies/2ac20904-19ff-4260-80b9-82223ef848de
