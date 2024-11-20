@@ -24,7 +24,43 @@ app.use(cors({
 app.get('/movies', (req, res) => {
   const { genre } = req.query
 
-  fs.readFile('./data/movies.json', 'utf-8')
+  fs.readFile('data/movies.json', 'utf-8')
+    .then(data => {
+      if (genre) {
+        const filteredMovies = JSON.parse(data).filter(
+          movie => movie.genre.some(
+            g => g.toLowerCase() === genre.toLowerCase()
+          )
+        )
+        return res.json(filteredMovies)
+      }
+
+      res.json(JSON.parse(data))
+    })
+})
+
+app.get('/movies2', (req, res) => {
+  const { genre } = req.query
+
+  fs.readFile('/data/movies.json', 'utf-8')
+    .then(data => {
+      if (genre) {
+        const filteredMovies = JSON.parse(data).filter(
+          movie => movie.genre.some(
+            g => g.toLowerCase() === genre.toLowerCase()
+          )
+        )
+        return res.json(filteredMovies)
+      }
+
+      res.json(JSON.parse(data))
+    })
+})
+
+app.get('/movies3', (req, res) => {
+  const { genre } = req.query
+
+  fs.readFile('~/data/movies.json', 'utf-8')
     .then(data => {
       if (genre) {
         const filteredMovies = JSON.parse(data).filter(
