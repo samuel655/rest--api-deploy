@@ -24,7 +24,7 @@ app.use(cors({
 app.get('/movies', (req, res) => {
   const { genre } = req.query
 
-  fs.readFile('./movies.json', 'utf-8')
+  fs.readFile('movies.json', 'utf-8')
     .then(data => {
       if (genre) {
         const filteredMovies = JSON.parse(data).filter(
