@@ -34,3 +34,6 @@ Content-Type: application/json
 
 ### Delete one movie
 DELETE http://localhost:1234/movies/2ac20904-19ff-4260-80b9-82223ef848de
+
+###
+GET https://rest-api-deploy-drab.vercel.app/movies
