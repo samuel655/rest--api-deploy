@@ -1,7 +1,7 @@
 ###  load all movies
 GET http://localhost:1234/movies
 
-### load just one movie by id mmovie
+### load just one movie by id movie
 GET http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 
 ### load all movies by genre
@@ -12,10 +12,10 @@ POST http://localhost:1234/movies
 Content-Type: application/json
 
 {
-  "title": "God's not dead 2",
-  "year": 2016,
+  "title": "God's not dead 3",
+  "year": 2022,
   "director": "God",
-  "duration": 140,
+  "duration": 150,
   "poster": "https://i.ebayimg.com/images/g/4goAAOSwMyBe7hnQ/s-l1200.webp",
   "genre": [
     "Worship",

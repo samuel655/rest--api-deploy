@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import crypto from 'node:crypto'
 import cors from 'cors'
 import { validateMovie, validatePartialMovie } from './schema/movie-schema.js'
+import movies from './data/movies.json' with { type: 'json' }
 
 const port = process.env.PORT ?? 1234
 
@@ -24,31 +25,23 @@ app.use(cors({
 app.get('/movies', (req, res) => {
   const { genre } = req.query
 
-  fs.readFile('./data/movies.json', 'utf-8')
-    .then(data => {
-      if (genre) {
-        const filteredMovies = JSON.parse(data).filter(
-          movie => movie.genre.some(
-            g => g.toLowerCase() === genre.toLowerCase()
-          )
-        )
-        return res.json(filteredMovies)
-      }
+  if (genre) {
+    const filteredMovies = movies.filter(movie => movie.genre.some(
+      g => g.toLowerCase() === genre.toLowerCase()
+    ))
+    return res.json(filteredMovies)
+  }
 
-      res.json(JSON.parse(data))
-    })
+  res.json(movies)
 })
 
 app.get('/movies/:id', (req, res) => {
   const { id } = req.params
 
-  fs.readFile('./movies.json', 'utf-8')
-    .then(data => {
-      const movie = JSON.parse(data).find(movie => movie.id === id)
+  const movie = movies.find(movie => movie.id === id)
 
-      if (movie) return res.json(movie)
-      res.status(404).json({ message: 'Movie not found' })
-    })
+  if (movie) return res.json(movie)
+  res.status(404).json({ message: 'Not found' })
 })
 
 app.post('/movies', (req, res) => {
@@ -57,58 +50,44 @@ app.post('/movies', (req, res) => {
   if (result.error) return res.status(400).json({ error: JSON.parse(result.error.message) })
 
   const newMovie = { id: crypto.randomUUID(), ...result.data }
+  
+  movies.push(newMovie)
+  
+  // fs.writeFile('./data/movies.json', JSON.stringify(movies, null, 2))
 
-  fs.readFile('./movies.json', 'utf-8')
-    .then(data => {
-      const movies = JSON.parse(data)
-      movies.push(newMovie)
-
-      fs.writeFile('./movies.json', JSON.stringify(movies, null, 2))
-
-      res.status(201).json(newMovie)
-    })
+  res.status(201).json(newMovie)
 })
 
 app.patch('/movies/:id', (req, res) => {
   const result = validatePartialMovie(req.body)
-
-  if (!result.success) {
-    return res.status(400).json({ error: JSON.parse(result.error.message) })
-  }
-
   const { id } = req.params
-  fs.readFile('./movies.json', 'utf-8')
-    .then(data => {
-      const movies = JSON.parse(data)
-      const movieIndex = movies.findIndex(movie => movie.id === id)
 
-      if (movieIndex === -1) {
-        return res.status(404).json({ message: 'Movie not found' })
-      }
+  if (!result.success) 
+    return res.status(400).json({ error: JSON.parse(result.error.message) })
+  
+  movieIndex = movies.findIndex(movie => movie.id === id)
 
-      const updateMovie = { ...movies[movieIndex], ...result.data }
+  if (movieIndex === -1) 
+    return res.status(404).json({ message: 'Movie not found' })
+  
+  const updateMovie = { ...movies[movieIndex], ...result.data }
 
-      movies[movieIndex] = updateMovie
-      fs.writeFile('./movies.json', JSON.stringify(movies, null, 2))
+  movies[movieIndex] = updateMovie
+  // fs.writeFile('./data/movies.json', JSON.stringify(movies, null, 2))
 
-      res.json(updateMovie)
-    })
+  res.json(updateMovie)
 })
 
 app.delete('/movies/:id', (req, res) => {
   const { id } = req.params
+  
+  const movieIndex = movies.findIndex(movie => movie.id === id)
 
-  fs.readFile('./movies.json', 'utf-8')
-    .then(data => {
-      const movies = JSON.parse(data)
-      const movieIndex = movies.findIndex(movie => movie.id === id)
+  if (movieIndex === -1) return res.status(404).json({ message: 'Not found Movie' })
 
-      if (movieIndex === -1) return res.status(404).json({ message: 'Not found Movie' })
-
-      movies.splice(movieIndex, 1)
-      fs.writeFile('./movies.json', JSON.stringify(movies, null, 2))
-      return res.json({ message: 'Movie deleted' })
-    })
+  movies.splice(movieIndex, 1)
+  // fs.writeFile('./data/movies.json', JSON.stringify(movies, null, 2))
+  return res.json({ message: 'Movie deleted' })
 })
 
 app.use((req, res) => {
