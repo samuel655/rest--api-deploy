@@ -5,7 +5,7 @@ GET http://localhost:1234/movies
 GET http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 
 ### load all movies by genre
-GET http://localhost:1234/movies?genre=Action
+GET http://localhost:1234/movies?genre=Worship
 
 ### Create a movie
 POST http://localhost:1234/movies
@@ -29,11 +29,11 @@ PATCH http://localhost:1234/movies/f5c686d5-2613-448f-b314-7aad2532a82f
 Content-Type: application/json
 
 {
-    "year": 2017
+  "year": 2016
 }
 
 ### Delete one movie
-DELETE http://localhost:1234/movies/2ac20904-19ff-4260-80b9-82223ef848de
+DELETE http://localhost:1234/movies/e3fb5b0b-b423-42b8-9e6e-8f49f4bf0e19
 
 ###
 GET https://rest-api-deploy-drab.vercel.app/movies
