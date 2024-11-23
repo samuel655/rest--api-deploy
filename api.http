@@ -2,26 +2,26 @@
 GET http://localhost:1234/movies
 
 ### load just one movie by id movie
-GET http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+GET http://localhost:1234/movies/008a774e-a84b-11ef-aa11-fc5ceea1e8e5
 
 ### load all movies by genre
 GET http://localhost:1234/movies?genre=Worship
 
-### Create a movie
+### Create a movie 
 POST http://localhost:1234/movies
 Content-Type: application/json
 
 {
-  "title": "God's not dead 3",
-  "year": 2022,
+  "title": "God's not dead 2",
+  "year": 2016,
   "director": "God",
-  "duration": 150,
+  "duration": 140,
   "poster": "https://i.ebayimg.com/images/g/4goAAOSwMyBe7hnQ/s-l1200.webp",
   "genre": [
     "Worship",
-    "Believer"
+    "Drama"
   ],
-  "rate": 9.5
+  "rate": 9.8
 }
 
 ### Update a part of movie
